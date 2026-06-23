@@ -37,12 +37,12 @@ export default function DrawnDisplay({
       </div>
 
       {/* Main Ball Display */}
-      <div className="h-60 flex items-center justify-center">
+      <div className="h-72 flex items-center justify-center">
         {isRolling ? (
           // Rolling Ball State
-          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-violet-600/80 to-fuchsia-600/80 flex flex-col items-center justify-center border-4 border-white/20 animate-spin text-white shadow-xl">
-            <span className="text-[12px] font-bold tracking-widest text-white/70 uppercase">Sorteando</span>
-            <span className="text-5xl font-black">{fakeNumber}</span>
+          <div className="w-56 h-56 rounded-full bg-gradient-to-br from-violet-600/80 to-fuchsia-600/80 flex flex-col items-center justify-center border-4 border-white/20 animate-spin text-white shadow-xl">
+            <span className="text-[14px] font-bold tracking-widest text-white/70 uppercase">Sorteando</span>
+            <span className="text-6xl font-black">{fakeNumber}</span>
           </div>
         ) : isGameOver ? (
           // Game Over State
@@ -55,22 +55,22 @@ export default function DrawnDisplay({
           </div>
         ) : lastDrawn ? (
           // Number Drawn State
-          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-violet-600 to-indigo-700 flex flex-col items-center justify-center border-4 border-white/10 text-white animate-ball-pop shadow-2xl relative">
+          <div className="w-56 h-56 rounded-full bg-gradient-to-br from-violet-600 to-indigo-700 flex flex-col items-center justify-center border-4 border-white/10 text-white animate-ball-pop shadow-2xl relative">
             <div className="absolute inset-1 rounded-full border border-white/10" />
             {maxBalls === 75 && letter && (
-              <span className="text-2xl font-black text-violet-300 leading-none -mt-2">
+              <span className="text-3xl font-black text-violet-300 leading-none -mt-2">
                 {letter}
               </span>
             )}
-            <span className="text-6xl font-black leading-tight tracking-tight mt-1">
+            <span className="text-7xl font-black leading-tight tracking-tight mt-1">
               {lastDrawn}
             </span>
           </div>
         ) : (
           // Idle / Welcome State
           <div className="text-center py-4">
-            <div className="w-28 h-28 mx-auto rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-violet-400 mb-4">
-              <span className="text-3xl font-extrabold">?</span>
+            <div className="w-36 h-36 mx-auto rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-violet-400 mb-4">
+              <span className="text-4xl font-extrabold">?</span>
             </div>
             <p className="text-lg font-bold text-gray-300">Pronto para Sorteio</p>
             <p className="text-xs text-gray-500 mt-1">Clique no botão abaixo para começar.</p>

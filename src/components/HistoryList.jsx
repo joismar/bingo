@@ -10,9 +10,8 @@ export const getBingoLetter = (num) => {
 };
 
 export default function HistoryList({ drawnNumbers, maxBalls }) {
-  // Get last 5 drawn numbers (excluding the very last one, which is shown on the main display)
-  // Or show the 5 numbers prior to the current one.
-  const history = drawnNumbers.slice(0, -1).slice(-5).reverse();
+  // Get all previously drawn numbers (excluding the very last one, which is shown on the main display)
+  const history = drawnNumbers.slice(0, -1).reverse();
 
   if (history.length === 0) {
     return (
@@ -26,7 +25,7 @@ export default function HistoryList({ drawnNumbers, maxBalls }) {
   return (
     <div className="glass-panel rounded-2xl p-6 border border-white/5">
       <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 text-left">
-        Últimos Sorteados
+        Histórico de Sorteio
       </h3>
       <div className="flex gap-3 justify-start items-center overflow-x-auto py-1">
         {history.map((num, idx) => {
@@ -34,7 +33,7 @@ export default function HistoryList({ drawnNumbers, maxBalls }) {
           return (
             <div
               key={num}
-              style={{ opacity: 1 - idx * 0.15 }}
+              style={{ opacity: Math.max(0.4, 1 - idx * 0.04) }}
               className="flex-shrink-0 flex flex-col items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-gray-300 transform hover:scale-105 transition-all duration-300"
             >
               {letter && (

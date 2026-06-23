@@ -1,14 +1,36 @@
-import React, { useState, useCallback } from 'react';
-import { Volume2, VolumeX, RefreshCw, Trophy, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Volume2, VolumeX, Trophy, Sparkles } from 'lucide-react';
 import { useAudio } from './hooks/useAudio';
 import BingoBoard from './components/BingoBoard';
 import DrawnDisplay from './components/DrawnDisplay';
 import HistoryList from './components/HistoryList';
 
 export default function App() {
-  const [maxBalls, setMaxBalls] = useState(75);
-  const [drawnNumbers, setDrawnNumbers] = useState([]);
+  const [maxBalls, setMaxBalls] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bingo_max_balls');
+      return saved ? parseInt(saved, 10) : 75;
+    } catch {
+      return 75;
+    }
+  });
+  const [drawnNumbers, setDrawnNumbers] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bingo_drawn_numbers');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [isRolling, setIsRolling] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('bingo_max_balls', maxBalls.toString());
+  }, [maxBalls]);
+
+  useEffect(() => {
+    localStorage.setItem('bingo_drawn_numbers', JSON.stringify(drawnNumbers));
+  }, [drawnNumbers]);
 
   const { soundEnabled, setSoundEnabled, playClick, playDraw } = useAudio();
 
@@ -76,7 +98,9 @@ export default function App() {
           gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
           osc.start();
           osc.stop(ctx.currentTime + 0.08);
-        } catch (e) {}
+        } catch (err) {
+          console.warn('Som de confirmação falhou:', err);
+        }
       }, 50);
     }
   };
@@ -147,7 +171,7 @@ export default function App() {
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Left Column: Sorter Display & History */}
+          {/* Left Column: Sorter Display */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             <DrawnDisplay
               lastDrawn={drawnNumbers[drawnNumbers.length - 1]}
@@ -157,11 +181,6 @@ export default function App() {
               onReset={handleReset}
               isGameOver={isGameOver}
               totalDrawn={drawnNumbers.length}
-            />
-
-            <HistoryList
-              drawnNumbers={drawnNumbers}
-              maxBalls={maxBalls}
             />
           </div>
 
@@ -173,6 +192,14 @@ export default function App() {
             />
           </div>
 
+        </div>
+
+        {/* History List below the main grid, spanning full width */}
+        <div className="mt-8">
+          <HistoryList
+            drawnNumbers={drawnNumbers}
+            maxBalls={maxBalls}
+          />
         </div>
       </main>
 
